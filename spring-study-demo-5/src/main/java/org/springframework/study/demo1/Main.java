@@ -1,7 +1,19 @@
-package org.springframework.study.demo1;/**
- *  TODO
+package org.springframework.study.demo1;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.study.demo1.bean.TestBean;
+import org.springframework.study.demo1.config.AppConfig;
+
+/**
+ * TODO
  *  @author wanghongjie
  *  @date 2022/5/26 14:47
  */
 public class Main {
+	public static void main(String[] args) {
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+		TestBean bean = applicationContext.getBean(TestBean.class);
+		bean.say();
+	}
 }
