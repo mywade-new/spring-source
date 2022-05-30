@@ -1,6 +1,5 @@
 package org.springframework.study.demo1;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.study.demo1.bean.TestBean;
 import org.springframework.study.demo1.config.AppConfig;
@@ -12,8 +11,14 @@ import org.springframework.study.demo1.config.AppConfig;
  */
 public class Main {
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 		TestBean bean = applicationContext.getBean(TestBean.class);
 		bean.say();
+
+		// 发布事件
+		applicationContext.publishEvent("1111");
+
+		applicationContext.close();
+
 	}
 }

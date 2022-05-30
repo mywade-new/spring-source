@@ -241,6 +241,7 @@ public abstract class AbstractApplicationEventMulticaster
 			for (String listenerBeanName : listenerBeans) {
 				try {
 					if (supportsEvent(beanFactory, listenerBeanName, eventType)) {
+						// 自定义注释：获取真实监听器bean（包括生成懒加载）
 						ApplicationListener<?> listener =
 								beanFactory.getBean(listenerBeanName, ApplicationListener.class);
 						if (!allListeners.contains(listener) && supportsEvent(listener, eventType, sourceType)) {

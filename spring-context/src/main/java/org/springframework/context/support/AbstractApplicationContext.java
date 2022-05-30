@@ -534,12 +534,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Check for listener beans and register them.
 				// 自定义注释：把定义在ApplicationListener的Bean对象，设置到ApplicationContext中去，并执行在此之前所发布的事件
+				// 使用的是SimpleApplicationEventMulticaster类进行处理
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				// 自定义注释：实例化非懒加载的单例Bean
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+				// 自定义注释：容器启动后的回调方法
+				// 例子一： SmartLifecycle#start()方法调用
 				finishRefresh();
 			}
 
@@ -666,7 +670,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
 		// Register early post-processor for detecting inner beans as ApplicationListeners.
-		// 自定义注释：增加ApplicationListenerDetector的BeanPostProcessor对象，用于监听的处理
+		// 自定义注释：增加ApplicationListenerDetector的BeanPostProcessor对象，用于处理springbean是否是事件监听对象，并放入监听器集合缓存中
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
@@ -861,6 +865,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Register a default embedded value resolver if no bean post-processor
 		// (such as a PropertyPlaceholderConfigurer bean) registered any before:
 		// at this point, primarily for resolution in annotation attribute values.
+		// 自定义注释：设置默认的占位符解析器 ${xxx} --- key
 		if (!beanFactory.hasEmbeddedValueResolver()) {
 			beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));
 		}
@@ -878,6 +883,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		// 自定义注释：实例化非懒加载的单例Bean
 		beanFactory.preInstantiateSingletons();
 	}
 
@@ -891,9 +897,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		clearResourceCaches();
 
 		// Initialize lifecycle processor for this context.
+		// 自定义注释：初始化生命周期处理器LifecycleProcessor
 		initLifecycleProcessor();
 
 		// Propagate refresh to lifecycle processor first.
+		// 自定义注释：调用生命周期处理器LifecycleProcessor的onRefresh()方法，
 		getLifecycleProcessor().onRefresh();
 
 		// Publish the final event.
